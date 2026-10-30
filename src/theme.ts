@@ -61,7 +61,9 @@ export const coverShadow = {
 } as const; // light mode only
 
 export type ColorScheme = 'light' | 'dark';
-export type Colors = typeof palette.light;
+export type Colors = {
+  readonly [K in keyof typeof palette.light]: string;
+};
 
 export function getColors(scheme: ColorScheme): Colors {
   return palette[scheme];

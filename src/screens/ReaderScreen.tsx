@@ -9,7 +9,7 @@ import {
   BackHandler,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { useTheme } from '../hooks/useTheme';
 import { reader as readerTokens } from '../theme';
 import { ReaderTopBar, ReaderBottomBar } from '../components/ReaderControls';
