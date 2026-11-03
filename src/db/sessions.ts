@@ -164,12 +164,10 @@ export async function getBooksFinishedThisYear(): Promise<number> {
   const db = await getDB();
   const year = new Date().getFullYear();
   const from = `${year}-01-01`;
-  const to = `${year}-12-31`;
+  const to = `${year}-12-31T23:59:59.999Z`;
   const row = await db.getFirstAsync<{ c: number }>(
-    `SELECT COUNT(*) as c FROM reading_sessions
-     WHERE date >= ? AND date <= ?
-     GROUP BY bookId
-     HAVING SUM(durationSeconds) > 0`,
+    `SELECT COUNT(*) as c FROM books
+     WHERE status = 'finished' AND updatedAt >= ? AND updatedAt <= ?`,
     [from, to],
   );
   return row?.c ?? 0;

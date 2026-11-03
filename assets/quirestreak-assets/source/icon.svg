@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <title>QuireStreak App Icon</title>
+  <desc>Export at 1024×1024 px as icon.png (iOS) and app-store-icon-1024.png (App Store Connect).</desc>
+  <rect width="1024" height="1024" fill="#1A1714"/>
+  <g transform="translate(512,512) scale(1.05) translate(-528,-534)">
+    <circle cx="490" cy="470" r="230" fill="none" stroke="#FAF7F2" stroke-width="96"/>
+    <g transform="translate(610,600) rotate(-38)">
+      <path d="M-58 0 H58 V290 L0 232 L-58 290 Z" fill="#D9531E" stroke="#1A1714" stroke-width="22" stroke-linejoin="round" paint-order="stroke"/>
+    </g>
+  </g>
+</svg>

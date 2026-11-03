@@ -1,5 +1,5 @@
 import * as Notifications from 'expo-notifications';
-import * as Calendar from 'expo-calendar';
+import * as Calendar from 'expo-calendar/legacy';
 import { Platform } from 'react-native';
 
 Notifications.setNotificationHandler({
@@ -7,6 +7,8 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: false,
     shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
   }),
 });
 
@@ -36,17 +38,11 @@ export async function scheduleReadingReminder(opts: ScheduleOptions): Promise<st
   await Notifications.cancelAllScheduledNotificationsAsync();
 
     const trigger: any = opts.repeatDaily
-      ? (Notifications.SchedulableTriggerInputTypes?.DAILY
-          ? {
-              type: Notifications.SchedulableTriggerInputTypes.DAILY,
-              hour: opts.hour,
-              minute: opts.minute,
-            }
-          : {
-              hour: opts.hour,
-              minute: opts.minute,
-              repeats: true,
-            })
+      ? {
+          type: Notifications.SchedulableTriggerInputTypes.DAILY,
+          hour: opts.hour,
+          minute: opts.minute,
+        }
       : {
           date: (() => {
             const d = new Date();
@@ -87,7 +83,7 @@ export async function addToCalendar(opts: {
     if (!granted) return null;
 
     const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
-    const writable = calendars.find((c) => c.allowsModifications && !c.isImmutable);
+    const writable = calendars.find((c) => c.allowsModifications && !(c as any).isImmutable);
     if (!writable) return null;
 
     const endDate = new Date(opts.startDate.getTime() + opts.durationMinutes * 60 * 1000);

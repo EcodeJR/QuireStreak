@@ -9,6 +9,7 @@ import {
   Switch,
   Alert,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../hooks/useTheme';
 import { space, type as typeTokens, size, radius } from '../theme';
 import { SecondaryButton, PrimaryButton } from '../components/Buttons';
@@ -24,6 +25,7 @@ import {
 
 export function SettingsScreen({ navigation }: any) {
   const { colors, scheme, setScheme } = useTheme();
+  const insets = useSafeAreaInsets();
 
   const [dailyGoal, setDailyGoal] = useState<number>(60);
   const [minEngaged, setMinEngaged] = useState<number>(10);
@@ -120,11 +122,12 @@ export function SettingsScreen({ navigation }: any) {
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.paper }]}>
-      <View style={styles.topBar}>
+      <View style={[styles.topBar, { paddingTop: Math.max(insets.top, 16), height: 56 + Math.max(insets.top, 16) }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.backButton}
           accessibilityLabel="Back"
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
           <Text style={[styles.backArrow, { color: colors.ink }]}>←</Text>
         </TouchableOpacity>

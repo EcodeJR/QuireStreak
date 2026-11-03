@@ -129,10 +129,10 @@ export function StreakScreen() {
             {currentStreak}
           </Text>
           <Text style={[typeTokens.caption, { color: colors.ink, marginTop: space.xs }]}>
-            day streak
+            {currentStreak === 1 ? 'day' : 'days'} streak
           </Text>
           <Text style={[typeTokens.caption, { color: colors.muted, marginTop: 2 }]}>
-            Longest {longestStreak} days
+            Longest {longestStreak} {longestStreak === 1 ? 'day' : 'days'}
           </Text>
         </View>
 
@@ -156,17 +156,17 @@ export function StreakScreen() {
         <View style={styles.statsContainer}>
           <View style={[styles.statRow, { borderColor: colors.hairline, backgroundColor: colors.surface }]}>
             <Text style={[typeTokens.caption, { color: colors.muted }]}>Longest streak</Text>
-            <Text style={[typeTokens.headline, { color: colors.ink }]}>{longestStreak} days</Text>
+            <Text style={[typeTokens.headline, { color: colors.ink }]}>{longestStreak} {longestStreak === 1 ? 'day' : 'days'}</Text>
           </View>
 
           <View style={[styles.statRow, { borderColor: colors.hairline, backgroundColor: colors.surface }]}>
             <Text style={[typeTokens.caption, { color: colors.muted }]}>Days read this month</Text>
-            <Text style={[typeTokens.headline, { color: colors.ink }]}>{daysThisMonth} days</Text>
+            <Text style={[typeTokens.headline, { color: colors.ink }]}>{daysThisMonth} {daysThisMonth === 1 ? 'day' : 'days'}</Text>
           </View>
 
           <View style={[styles.statRow, { borderColor: colors.hairline, backgroundColor: colors.surface }]}>
             <Text style={[typeTokens.caption, { color: colors.muted }]}>Books finished this year</Text>
-            <Text style={[typeTokens.headline, { color: colors.ink }]}>{booksFinishedYear} books</Text>
+            <Text style={[typeTokens.headline, { color: colors.ink }]}>{booksFinishedYear} {booksFinishedYear === 1 ? 'book' : 'books'}</Text>
           </View>
         </View>
       </ScrollView>
@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: space.xxl,
+    width: '100%',
   },
   sectionEyebrow: {
     paddingHorizontal: space.gutter,

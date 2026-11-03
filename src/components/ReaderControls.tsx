@@ -4,8 +4,8 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../hooks/useTheme';
 import { space, type as typeTokens, size, radius } from '../theme';
 
@@ -23,17 +23,28 @@ export function ReaderTopBar({
   onOpenSettings,
 }: ReaderTopBarProps) {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   if (!visible) return null;
 
   return (
-    <View style={[styles.topBarContainer, { backgroundColor: colors.paper, borderBottomColor: colors.hairline }]}>
-      <SafeAreaView style={styles.topBarContent}>
+    <View
+      style={[
+        styles.topBarContainer,
+        {
+          backgroundColor: colors.paper,
+          borderBottomColor: colors.hairline,
+          paddingTop: Math.max(insets.top, 12),
+        },
+      ]}
+    >
+      <View style={styles.topBarContent}>
         <TouchableOpacity
           onPress={onBack}
           style={styles.iconButton}
           accessibilityRole="button"
           accessibilityLabel="Back to library"
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
           <Text style={[styles.backIcon, { color: colors.ink }]}>←</Text>
         </TouchableOpacity>
@@ -50,10 +61,11 @@ export function ReaderTopBar({
           style={styles.iconButton}
           accessibilityRole="button"
           accessibilityLabel="Reading settings"
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
           <Text style={[styles.settingsIcon, { color: colors.ink }]}>Aa</Text>
         </TouchableOpacity>
-      </SafeAreaView>
+      </View>
     </View>
   );
 }
@@ -63,6 +75,10 @@ interface ReaderBottomBarProps {
   percentRead: number; // 0.0 to 1.0
   sessionMinutes: number;
   totalGoalMinutes?: number;
+  chapterIndex?: number;
+  totalChapters?: number;
+  onPrevChapter?: () => void;
+  onNextChapter?: () => void;
 }
 
 export function ReaderBottomBar({
@@ -70,8 +86,13 @@ export function ReaderBottomBar({
   percentRead,
   sessionMinutes,
   totalGoalMinutes = 60,
+  chapterIndex = 0,
+  totalChapters = 1,
+  onPrevChapter,
+  onNextChapter,
 }: ReaderBottomBarProps) {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   if (!visible) return null;
 
@@ -79,7 +100,16 @@ export function ReaderBottomBar({
   const minutesLeft = Math.max(0, Math.round(totalGoalMinutes - sessionMinutes));
 
   return (
-    <View style={[styles.bottomBarContainer, { backgroundColor: colors.paper, borderTopColor: colors.hairline }]}>
+    <View
+      style={[
+        styles.bottomBarContainer,
+        {
+          backgroundColor: colors.paper,
+          borderTopColor: colors.hairline,
+          paddingBottom: Math.max(insets.bottom, 12),
+        },
+      ]}
+    >
       {/* 2px accent progress line */}
       <View style={[styles.progressTrack, { backgroundColor: colors.hairline }]}>
         <View
@@ -90,15 +120,38 @@ export function ReaderBottomBar({
         />
       </View>
 
-      <SafeAreaView style={styles.bottomBarContent}>
-        <Text style={[typeTokens.caption, { color: colors.muted }]}>
-          {pct}% read
-        </Text>
+      <View style={styles.bottomBarContent}>
+        {/* Previous page/chapter button */}
+        <TouchableOpacity
+          onPress={onPrevChapter}
+          disabled={chapterIndex <= 0}
+          style={[styles.pageButton, { opacity: chapterIndex <= 0 ? 0.35 : 1 }]}
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+          accessibilityLabel="Previous page"
+        >
+          <Text style={[styles.pageButtonText, { color: colors.ink }]}>‹ Prev</Text>
+        </TouchableOpacity>
 
-        <Text style={[typeTokens.caption, { color: colors.muted }]}>
-          {minutesLeft > 0 ? `${minutesLeft}m left in goal` : 'Goal met today'}
-        </Text>
-      </SafeAreaView>
+        <View style={styles.centerInfo}>
+          <Text style={[typeTokens.caption, { color: colors.muted, fontWeight: '600' }]}>
+            {totalChapters > 1 ? `Ch. ${chapterIndex + 1} of ${totalChapters}` : `${pct}% read`}
+          </Text>
+          <Text style={[{ fontSize: 11, color: colors.muted }]}>
+            {minutesLeft > 0 ? `${minutesLeft}m left in goal` : 'Goal met today'}
+          </Text>
+        </View>
+
+        {/* Next page/chapter button */}
+        <TouchableOpacity
+          onPress={onNextChapter}
+          disabled={chapterIndex >= totalChapters - 1}
+          style={[styles.pageButton, { opacity: chapterIndex >= totalChapters - 1 ? 0.35 : 1 }]}
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+          accessibilityLabel="Next page"
+        >
+          <Text style={[styles.pageButtonText, { color: colors.ink }]}>Next ›</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -117,7 +170,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: space.gutter,
-    height: 56,
+    height: 52,
   },
   iconButton: {
     minWidth: size.tapTarget,
@@ -158,6 +211,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: space.gutter,
-    height: 44,
+    height: 48,
+  },
+  pageButton: {
+    minWidth: 64,
+    height: 36,
+    paddingHorizontal: space.sm,
+    borderRadius: radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pageButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  centerInfo: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

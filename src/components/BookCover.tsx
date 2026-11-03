@@ -2,7 +2,7 @@ import React from 'react';
 import {
   View, Text, StyleSheet, Image, ViewStyle,
 } from 'react-native';
-import { palette, space, radius, type as typeTokens, coverShadow, size } from '../theme';
+import { palette, space, radius, type as typeTokens, coverShadow, size, Colors } from '../theme';
 import { useTheme } from '../hooks/useTheme';
 
 interface BookCoverProps {
@@ -89,7 +89,7 @@ export function BookCover({
   );
 }
 
-function FallbackCover({ title, author, colors }: { title: string; author: string; colors: typeof palette.light }) {
+function FallbackCover({ title, author, colors }: { title: string; author: string; colors: Colors }) {
   return (
     <View style={[styles.fallback, { backgroundColor: colors.sunken }]}>
       <Text

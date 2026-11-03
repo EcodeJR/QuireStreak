@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <title>QuireStreak Notification Icon</title>
+  <desc>Export at 96×96 px as notification-icon.png. Android notification icons must be white on transparent — no colour fills. Larger scale (1.1) to fill the smaller canvas at 96 px.</desc>
+  <g transform="translate(512,512) scale(1.1) translate(-528,-534)">
+    <defs>
+      <mask id="cut" maskUnits="userSpaceOnUse" x="-200" y="-200" width="1500" height="1500">
+        <rect x="-200" y="-200" width="1500" height="1500" fill="#fff"/>
+        <g transform="translate(610,600) rotate(-38)">
+          <path d="M-58 0 H58 V290 L0 232 L-58 290 Z" fill="#000" stroke="#000" stroke-width="22" stroke-linejoin="round"/>
+        </g>
+      </mask>
+    </defs>
+    <circle cx="490" cy="470" r="230" fill="none" stroke="#fff" stroke-width="96" mask="url(#cut)"/>
+    <g transform="translate(610,600) rotate(-38)">
+      <path d="M-58 0 H58 V290 L0 232 L-58 290 Z" fill="#fff"/>
+    </g>
+  </g>
+</svg>
